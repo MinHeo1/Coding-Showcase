@@ -1,0 +1,13 @@
+name: Mental_Health
+title: Mental_Health
+username:
+account: jackiechen
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 5288867
+bundleId: 5343920
+url: https://jackiechen.shinyapps.io/Mental_Health/
+when: 1638941521.38824
+lastSyncTime: 1638941521.38824
+asMultiple: FALSE
+asStatic: FALSE

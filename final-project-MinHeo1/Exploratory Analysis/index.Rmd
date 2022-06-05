@@ -1,0 +1,150 @@
+---
+title: "Index"
+author: "Min Heo"
+date: "11/14/2021"
+output: html_document
+---
+
+## Introduction
+Our group chose to focus on the impact of mental health on people in a variety of places (such as
+the workforce, school, the tech industry, etc.). Mental health is an important factor when
+considering the well-being of people which is why our group chose to focus on this. Mental health
+can take on many forms but our group chose to focus specifally on commonly known health issues
+such as depression and anxiety. Our chosen dataset contains data that takes in the gender, where
+they work (and the benefits) as well as treatment (such as care programs or mental health
+specialists) while also surveying for the consequences of these mental health issues.
+
+## Summary Information
+```{r}
+survey <- read.csv("~/INFO201/final-project-MinHeo1/survey.csv")
+
+summary(survey)
+library(dplyr)
+filtered_data <- filter(survey,Age > 0, Age < 100)
+mean_age <- mean(survey$Age)
+mean(survey$Age, na.rm = TRUE)
+
+median_age <- median(survey$Age, na.rm = TRUE)
+
+max_age <- max(survey$Age, na.rn = TRUE)
+
+min_age <- min(survey$Age, na.rn = TRUE)
+
+family_history<- survey$family_history
+
+no_family_history_total <- sum(stringr::str_detect(family_history, "No"), na.rm = TRUE)
+
+summary_info <- list(mean_age, median_age, max_age, min_age, no_family_history_total)
+```
+Based off of the fixed dataset (configuring it so that it was consistent while narrowing down the
+scope to select states in the United States) we found that mental health is prominent in all
+individuals no matter the state that they are in. Although there were some inconsistencies (such
+as some reporting weird ages), the assumptions that could be made are clear. The median age is
+around 31, which makes sense when considering that is the prime of their careers (i.e., around
+5-10 years into their job, working for a promotion, worrying about salary or family, etc.). We
+also calculated the family history, and found that some did have a family history of mental
+health although the data is inconsistent (seemingly similar rates of mental health issues among
+those with family history and those without) which meant assumptions couldn't be made (or at
+least good assumptions). Overall, mental health is an issue that cannot be ignored. It is
+prevalent in all states shown and shows similar rates among all states (especially among middle
+aged individuals).The mean, min, and max age had unusual values of 79428148.3, -1726, and 9.9 x
+10^10. These outliers demonstrate the messiness of this dataset because it was self-reported.
+These were left in intentionally to show the bias within this datset (i.e., people may not have
+taken the survey seriously). The exuberant data shows that mental health could be trivialized and
+most would not report correctly, demonstrating the limitations of a self-reported datset
+regarding mental health.
+
+## Aggregate Table Script
+```{r}
+library(tidytext)
+library(dplyr)
+library(ggplot2)
+rm(list = ls())
+df <- read.csv("~/INFO201/final-project-MinHeo1/survey.csv")
+df <- df %>% filter(grepl('2014', df$Timestamp))
+df$Gender <- toupper(df$Gender)
+df$Gender[grep("\\bM\\b",df$Gender)] <- 'MALE'
+df$Gender[grep("\\bF\\b",df$Gender)] <- 'FEMALE'
+df$Gender[grep("\\bWOMAN\\b",df$Gender)] <- 'FEMALE'
+keepGender <- c("MALE", "FEMALE")
+df <- df[df$Gender %in% keepGender, ]
+df <- 
+  df %>%
+  group_by(Country) %>%
+  filter(family_history == "No") %>%
+  filter(Country == "United States") %>% 
+  subset(select = c(Timestamp, Age, Gender, Country, state, family_history, no_employees, mental_vs_physical))
+mostCommon <-
+  df %>%
+  count(state, sort = TRUE)
+keepState <- as.vector(unlist(mostCommon$state))[1:10]
+df <- df[df$state %in% keepState, ]
+```
+The table is sorted based off of the messiness of the dataset. The data was self-reported so
+there were differing values entered (such as some putting "M" for male while others put "male")
+which was then recalculated by the table. The table also shows the mental health affects of those
+in the United States (and select states within it). This was to narrow down the scope of the
+dataset as well as allow more pertinent observations to be made. We found that women were
+slightly more likely to report suffering from mental health (although since this is
+self-reported, men could have underreported based off of stigma) compared to men. We also found
+that bigger states (and bigger businesses) tended to have more employees report suffering from
+mental health issues compared to smaller states and businesses.
+
+## Chart 1
+```{r}
+ggplot(df, aes(x = no_employees)) +
+  geom_bar(aes(fill = state)) + facet_grid(. ~ state) + 
+  theme(axis.text.x=element_text(angle=90, hjust=1)) + labs(title="Mental Health issues Count by Number of Employees", y="Number of Employees", x="Mental Health issues count")
+```
+The purpose of this chart is to show the number of employees who experience mental health issues
+at businesses with differing numbers of employees (in different states). Based off of the chart,
+we can see that on average, the more employees a business has the more likely they are to display
+mental health issues (although this could be because it is a bigger sample size). Also, "bigger"
+states such as California, Texas, and Washington have higher rates of mental illness than
+"smaller" states such as Indiana, Illinois, and Maryland. Another observation that could be made,
+though, is that more liberal states such as California and Washington are more likely to report
+their issues than other states, although this is just an assumption.
+
+## Chart 2
+```{r}
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+survey_df <- read.csv("~/INFO201/final-project-MinHeo1/survey.csv") 
+state_df <- survey_df %>%
+  filter(Country == "United States") %>%
+  group_by(state) %>%
+filter(state=="CA" || state=="NY" || state=="WA" || state=="TX" || state=="OR" || state=="IN" || state=="MA" || state=="OH" || state=="TN")
+  ordered_no_employees <- factor(state_df$no_employees, levels=c("1-5", "6-25", "26-100", "100-500", "500-1000", "More than 1000"))
+ggplot(state_df, aes(x=state, y=ordered_no_employees)) + geom_point(aes(col=coworkers)) + labs(title="Employee amount by Willingness to Discuss Mental Health per State", y="Number of Employees", x="State", color="Willingness")
+```
+The purpose of this chart was to show the willingness of businesses (with differing number of
+employees) to talk about mental health with other coworkers. The graph demonstrates that the more
+employees they have the more unwilling they seem to want to talk about mental health with their
+coworkers (with Texas the only state willing to talk). Although the graph doesn't have any
+concrete assumptions, an assumption that can be made is that the willingness to talk about mental
+health is still seemingly taboo. Only a few businesses are willing to talk about mental health
+with the majority of them reluctant or against talking about mental health.
+
+## Chart 3
+```{r}
+my_df <- df[-c(94), ]
+View(my_df)
+
+state_group <- my_df %>%
+  group_by(state)
+View(state_group)
+ggplot(my_df, aes(x = state, y = Age, color = state)) +
+  geom_violin(size = 1) + labs(title = "The age distribution of different states", x="States", y = "Age distribution") + theme(plot.title = element_text(hjust = 0.5))
+
+```
+The purpose of this chart is to show the distribution of mental health issues among different
+ages. As seen the bulk of mental health issues occurred around the ages 20-40 which is when most
+people are in their "peak" of their careers. Meaning that they have to worry about promotions,
+salaries, family, etc. Thus, the chart isn't surprising in any way, although there are some
+outlirs (such as Ohio having someone report around the age of 5). Most states don't seem to have
+mental health issues after the age of around 45, although this could in part due to the older
+generation not reporting (or unwilling to report, because again of the stigma against mental
+health). Another interesting observation is that the ages is consistent among all shown states
+which shows that the rate (and age) of mental health is similar in states and that mental health
+can impact anybody anywhere.
