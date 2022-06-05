@@ -1,0 +1,78 @@
+---
+title: "idk analysis"
+author: "Min Heo"
+date: "5/18/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE, warning=FALSE}
+library("knitr")
+source("analysis.R")
+```
+## Introduction
+Incarceration rates are a problem in the United States particularly because of the inherent racism
+(whether intentional or not) that is part of them. There are higher rates of incarceration among
+the African-American population when compared to other races (especially white people) which
+raises the issue of why this is the case. Racism is all too apparent in today's age which and it
+carries over into the prison system. Because of the inherent issues within the prison I chose to
+analyze the population of male non-white races (such as black, Latin, and Asians) to determine
+whether the bias was true or not.
+
+## Summary Information
+`mean_blacks_jailed_urban` `mean_lationx_jailed` `highest_blacks_prison` `highest_asians_prison` `blacks_jailed_2018`
+
+From the information calculated with the values I found that the number of African Americans
+jailed in 2010 was 283896 while in 2018 it was 247547. This was actually a decline but not by much
+which shows the sheer amount of African Americans that are detained. The most amount of African
+Americans imprisoned was in New York while the highest number of Asian's in prison was in urban
+areas (compared to rural). This shows the distribution of prison systems showing that bigger
+cities with bigger populations and urban areas are more likely to jail people compared to smaller
+places (which goes against the trend that liberal states are less likely to jail people). The mean
+number of latinx in jail was 32.59487 while the mean for African Americans was 0.02531465.
+Surprisingly, the number of latinx in prison is substantionally higher than African Americans
+although this could be due to the sheer amount of them in the prison systems. Overall though, we
+can see that there is implicit (or explicit) bias within the prison system. Especially for latinx
+and the African American community. Showing that change is necessary in order to get rid of some
+of the bias.
+## Map
+```{r map, echo=FALSE}
+black_prisoned_map 
+```
+The map shows us that the majority of shooting incidents in 2018 took place closer to the
+south-eastern side of the United States rather than the North-western portion of the states. It
+also shows us that the specific incidents with the most amount of deaths also take place in the
+south-eastern states. Researchers might want to look at why these states are so many incidents as
+well as having large amount of deaths in single cases. It could do a lot of good if they were able
+to determine the root cause of it. 
+
+## Plot
+This plot was made to answer the question of what is the relationship between the amount of people
+and injured or killed from the shootings that occurred in 2018 for each month in that year. I
+chose to do a line chart that has months for it's x-axis and amount of deaths or injuries for it's
+y-axis. It was the best choice because a line chart clearly demonstrates relationships between two
+different variables by it's shape. It could also reveal further insights into the time progression
+and how it can potentially change data.  
+
+```{r plot, echo=FALSE, fig.width = 9, fig.asp = .62}
+year_plot
+```
+
+The first insight I saw was that the number of injuries far exceeds that of number of deaths for
+each month. This could mean a variety of things such as health care being able to help those
+injured and avoid death. However, it is still a tragedy that many people had to suffer because of
+these shootings. The second insight that I saw was that the amount of injuries increased for each
+month after January before peaking in June and gradually decreasing over the months. While the
+deaths don't have such a correlation, the peak is extreme enough from the amount of injured people
+to be worth mentoning.  
+
+```{r plot, echo=FALSE, fig.width = 9, fig.asp = .62}
+bar_chart_jail
+```
+
+The first insight I saw was that the number of injuries far exceeds that of number of deaths for
+each month. This could mean a variety of things such as health care being able to help those
+injured and avoid death. However, it is still a tragedy that many people had to suffer because of
+these shootings. The second insight that I saw was that the amount of injuries increased for each
+month after January before peaking in June and gradually decreasing over the months. While the
+deaths don't have such a correlation, the peak is extreme enough from the amount of injured people
+to be worth mentoning.  
